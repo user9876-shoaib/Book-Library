@@ -30,10 +30,7 @@ function App() {
 
   const handleBookAdd = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:5000/books', {
-        ...formData,
-        image_url: formData.image_url || ""
-      });
+      const response = await axios.post('http://localhost:5000/books', formData);
       fetchBooks();
     } catch (error) {
       console.error('Error adding book:', error);
