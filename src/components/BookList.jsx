@@ -29,10 +29,9 @@ function BookList({ books, onBooksChange }) {
         <thead>
           <tr>
             <th style={{ width: '5%' }}>#</th>
-            <th style={{ width: '15%' }}>Cover</th>
-            <th style={{ width: '20%' }}>Title</th>
-            <th style={{ width: '20%' }}>Author</th>
-            <th style={{ width: '15%' }}>Genre</th>
+            <th style={{ width: '25%' }}>Title</th>
+            <th style={{ width: '25%' }}>Author</th>
+            <th style={{ width: '20%' }}>Genre</th>
             <th style={{ width: '10%' }}>Rating</th>
             <th style={{ width: '15%' }}>Actions</th>
           </tr>
@@ -41,28 +40,6 @@ function BookList({ books, onBooksChange }) {
           {books.map((book) => (
             <tr key={book.sno}>
               <td>{book.sno}</td>
-              <td>
-                {book.image_url ? (
-                  <img 
-                    src={book.image_url} 
-                    alt={`${book.title} cover`} 
-                    style={{ width: '100px', height: '150px', objectFit: 'cover' }}
-                  />
-                ) : (
-                  <div 
-                    style={{ 
-                      width: '100px', 
-                      height: '150px', 
-                      backgroundColor: '#f0f0f0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    No Image
-                  </div>
-                )}
-              </td>
               <td>{book.title}</td>
               <td>{book.authorname}</td>
               <td>{book.genre}</td>
