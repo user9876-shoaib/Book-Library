@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Alert from 'react-bootstrap/Alert';
+import { Button } from '../ui/button'
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Alert, AlertDescription } from '../ui/alert';
+import './Login.css';
 
 function Login({ onLoginSuccess }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -25,7 +24,9 @@ function Login({ onLoginSuccess }) {
       // Store authentication state
       localStorage.setItem('isAuthenticated', 'true');
       // Call the success callback
-      onLoginSuccess();
+      if (onLoginSuccess) {
+        onLoginSuccess();
+      }
       // Redirect to dashboard
       navigate('/dashboard');
     } else {
@@ -41,46 +42,93 @@ function Login({ onLoginSuccess }) {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-      <Row>
-        <Col>
-          <Form style={{ minWidth: '300px', margin: '50px' }} onSubmit={handleSubmit}>
-            <h2 className="text-center mb-4">Login</h2>
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Form.Group className="mb-3" controlId="username">
-              <Form.Label>Username</Form.Label>
-              <Form.Control 
-                type="text" 
+    <div className="login-container">
+      {/* Floating decorative elements */}
+      <div className="float-decoration float-1"></div>
+      <div className="float-decoration float-2"></div>
+      <div className="float-decoration float-3"></div>
+
+      {/* Main login container */}
+      <div className="login-wrapper">
+        {/* Title */}
+        <div className="login-title">
+          <h1 className="title-main">◆ LOGIN ◆</h1>
+          <p className="title-sub">░▒▓ ENTER THE ZONE ▓▒░</p>
+        </div>
+
+        {/* Login form box */}
+        <div className="login-form-container">
+          {/* Decorative corner pixels */}
+          <div className="corner-pixel corner-top-left"></div>
+          <div className="corner-pixel corner-top-right"></div>
+          <div className="corner-pixel corner-bottom-left"></div>
+          <div className="corner-pixel corner-bottom-right"></div>
+
+          {/* Inner decorative border */}
+          <div className="inner-border"></div>
+
+          <form onSubmit={handleSubmit} className="login-form">
+            {error && (
+              <Alert className="error-alert">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            {/* Username field */}
+            <div className="form-group">
+              <Label htmlFor="username" className="pixel-label">
+                ▓ USERNAME
+              </Label>
+              <Input
+                id="username"
+                type="text"
                 name="username"
-                placeholder="Enter username" 
                 value={credentials.username}
                 onChange={handleChange}
+                className="pixel-input"
+                placeholder="ENTER_USERNAME"
                 required
               />
-            </Form.Group>
+            </div>
 
-            <Form.Group className="mb-3" controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control 
-                type="password" 
+            {/* Password field */}
+            <div className="form-group">
+              <Label htmlFor="password" className="pixel-label">
+                ▓ PASSWORD
+              </Label>
+              <Input
+                id="password"
+                type="password"
                 name="password"
-                placeholder="Password" 
                 value={credentials.password}
                 onChange={handleChange}
+                className="pixel-input"
+                placeholder="ENTER_PASSWORD"
                 required
               />
-            </Form.Group>
-
-            <div className="d-grid">
-              <Button variant="primary" type="submit">
-                Login
-              </Button>
             </div>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+
+            {/* Login button */}
+            <Button type="submit" className="pixel-button">
+              ♦ LOG IN ♦
+            </Button>
+
+            {/* Decorative elements */}
+            <div className="form-decoration">
+              <div className="decoration-line"></div>
+              <span className="decoration-text">◊ ◊ ◊</span>
+              <div className="decoration-line"></div>
+            </div>
+          </form>
+        </div>
+
+        {/* Footer text */}
+        <div className="login-footer">
+          <p className="footer-text">▲ RETRO AUTHENTICATION SYSTEM ▲</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
-export default Login; 
+export default Login;

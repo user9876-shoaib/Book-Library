@@ -1,0 +1,30 @@
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  padding: 10px 16px;
+  height: 40px;
+  background-color: #0f172a;
+  color: white;
+}
+
+.ui-button:hover {
+  background-color: #1e293b;
+}
+
+.ui-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.ui-button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
