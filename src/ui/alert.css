@@ -1,0 +1,13 @@
+.ui-alert {
+  position: relative;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  background-color: #ffffff;
+}
+
+.ui-alert-description {
+  font-size: 14px;
+  line-height: 1.5;
+}
