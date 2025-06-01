@@ -1,14 +1,12 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './Navbar.css';
 
 function NavbarComponent({ onLogout }) {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isGenreDropdownOpen, setIsGenreDropdownOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
@@ -16,40 +14,114 @@ function NavbarComponent({ onLogout }) {
     navigate('/');
   };
 
-  return (
-    <Navbar expand="lg" className="bg-body-tertiary" fixed="top">
-      <Container fluid>
-        <Navbar.Brand href="#home">Book-Library</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <NavDropdown title="Genre" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.1">Fantasy</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.1">Fiction</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.1">Romance</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.1">Kids</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.1">Suspense</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-          <Form className="d-flex me-3">
-            <Form.Control
+  const toggleGenreDropdown = () => {
+    setIsGenreDropdownOpen(!isGenreDropdownOpen);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Add your search functionality here
+    console.log('Searching for:', searchValue);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  return (
+    <nav className="pixel-navbar">
+      {/* Decorative corner pixels */}
+      <div className="navbar-corner-pixel corner-top-left"></div>
+      <div className="navbar-corner-pixel corner-top-right"></div>
+
+      <div className="navbar-container">
+        {/* Brand */}
+        <div className="navbar-brand">
+          <span className="brand-text">◆ BOOK-LIBRARY ◆</span>
+        </div>
+
+        {/* Mobile menu toggle */}
+        <button 
+          className="mobile-menu-toggle"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <span className="toggle-line"></span>
+          <span className="toggle-line"></span>
+          <span className="toggle-line"></span>
+        </button>
+
+        {/* Navigation menu */}
+        <div className={`navbar-menu ${isMenuOpen ? 'menu-open' : ''}`}>
+          {/* Nav links */}
+          <div className="nav-links">
+            <a href="#home" className="nav-link">
+              ▓ HOME
+            </a>
+            
+            {/* Genre dropdown */}
+            <div className="nav-dropdown">
+              <button 
+                className="nav-dropdown-toggle"
+                onClick={toggleGenreDropdown}
+              >
+                ▓ GENRE ▼
+              </button>
+              {isGenreDropdownOpen && (
+                <div className="dropdown-menu">
+                  <div className="dropdown-corner-pixel dropdown-corner-tl"></div>
+                  <div className="dropdown-corner-pixel dropdown-corner-tr"></div>
+                  <div className="dropdown-corner-pixel dropdown-corner-bl"></div>
+                  <div className="dropdown-corner-pixel dropdown-corner-br"></div>
+                  <a href="#action/3.1" className="dropdown-item">⚔ ACTION</a>
+                  <a href="#action/3.1" className="dropdown-item">🐉 FANTASY</a>
+                  <a href="#action/3.1" className="dropdown-item">📚 FICTION</a>
+                  <a href="#action/3.1" className="dropdown-item">💕 ROMANCE</a>
+                  <a href="#action/3.1" className="dropdown-item">🎈 KIDS</a>
+                  <a href="#action/3.1" className="dropdown-item">🔍 SUSPENSE</a>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Search form */}
+          <form className="search-form" onSubmit={handleSearch}>
+            <input
               type="search"
-              placeholder="Search"
-              className="me-2"
+              placeholder="SEARCH_BOOKS"
+              className="search-input"
+              value={searchValue}
+              onChange={handleSearchChange}
               aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
-          </Form>
+            <button type="submit" className="search-button">
+              🔍
+            </button>
+          </form>
 
-          <Button variant="danger" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          {/* Logout button */}
+          <button 
+            className="logout-button"
+            onClick={handleLogout}
+          >
+            ♦ LOGOUT ♦
+          </button>
+        </div>
+      </div>
+
+      {/* Decorative bottom border */}
+      <div className="navbar-bottom-decoration">
+        <div className="decoration-pixel"></div>
+        <div className="decoration-pixel"></div>
+        <div className="decoration-pixel"></div>
+        <div className="decoration-pixel"></div>
+        <div className="decoration-pixel"></div>
+      </div>
+    </nav>
   );
 }
 
