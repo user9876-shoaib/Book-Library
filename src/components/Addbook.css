@@ -12,6 +12,7 @@
 
 /* Main container */
 .addbook-container {
+  margin-top: 70px;
   min-height: 100vh;
   min-width: 100vw;
   background: linear-gradient(135deg, 
