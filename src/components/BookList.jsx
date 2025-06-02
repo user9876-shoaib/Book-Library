@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../ui/Table';
 import { Alert, AlertDescription } from '../ui/alert';
 import axios from 'axios';
+import UpdateBook from './UpdateBook';
 import './BookList.css';
 
 function BookList({ books, onBooksChange }) {
@@ -24,8 +25,12 @@ function BookList({ books, onBooksChange }) {
     }
   };
 
-  const handleUpdate = async (book) => {
+  const handleUpdate = (book) => {
     setEditingBook(book);
+  };
+
+  const handleUpdateClose = () => {
+    setEditingBook(null);
   };
 
   const dismissMessage = () => {
@@ -142,6 +147,15 @@ function BookList({ books, onBooksChange }) {
           <p className="footer-text">▲ TOTAL BOOKS: {books.length} ▲</p>
         </div>
       </div>
+
+      {/* Update Book Modal */}
+      {editingBook && (
+        <UpdateBook
+          book={editingBook}
+          onClose={handleUpdateClose}
+          onUpdate={onBooksChange}
+        />
+      )}
     </div>
   );
 }

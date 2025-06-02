@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Alert, AlertDescription } from '../ui/alert';
-import './Addbook.css';
+import './UpdateBook.css';
 
-function AddBook({ onBookAdded }) {
+function UpdateBook({ book, onClose, onUpdate }) {
   const [formData, setFormData] = useState({
     title: '',
     authorname: '',
@@ -13,6 +13,17 @@ function AddBook({ onBookAdded }) {
     ratings: ''
   });
   const [message, setMessage] = useState({ text: '', type: '' });
+
+  useEffect(() => {
+    if (book) {
+      setFormData({
+        title: book.title,
+        authorname: book.authorname,
+        genre: book.genre,
+        ratings: book.ratings
+      });
+    }
+  }, [book]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,8 +36,8 @@ function AddBook({ onBookAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/books', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:5000/books/${book.sno}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -34,23 +45,21 @@ function AddBook({ onBookAdded }) {
       });
       
       if (response.ok) {
-        setMessage({ text: 'Book added successfully!', type: 'success' });
-        setFormData({
-          title: '',
-          authorname: '',
-          genre: '',
-          ratings: ''
-        });
+        setMessage({ text: 'Book updated successfully!', type: 'success' });
         // Call the callback to refresh the book list
-        if (onBookAdded) {
-          await onBookAdded();
+        if (onUpdate) {
+          await onUpdate();
         }
+        // Close the modal after a short delay
+        setTimeout(() => {
+          onClose();
+        }, 1500);
       } else {
-        throw new Error('Failed to add book');
+        throw new Error('Failed to update book');
       }
     } catch (error) {
       setMessage({ 
-        text: 'Error adding book. Please try again.', 
+        text: 'Error updating book. Please try again.', 
         type: 'error' 
       });
       console.error('Error:', error);
@@ -62,23 +71,16 @@ function AddBook({ onBookAdded }) {
   };
 
   return (
-    <div className="addbook-container">
-      {/* Floating decorative elements */}
-      <div className="float-decoration float-1"></div>
-      <div className="float-decoration float-2"></div>
-      <div className="float-decoration float-3"></div>
-      <div className="float-decoration float-4"></div>
-
-      {/* Main addbook container */}
-      <div className="addbook-wrapper">
+    <div className="update-book-overlay">
+      <div className="update-book-container">
         {/* Title */}
-        <div className="addbook-title">
-          <h1 className="title-main">◆ ADD BOOK ◆</h1>
-          <p className="title-sub">░▒▓ EXPAND THE LIBRARY ▓▒░</p>
+        <div className="update-book-title">
+          <h1 className="title-main">◆ UPDATE BOOK ◆</h1>
+          <p className="title-sub">░▒▓ MODIFY BOOK DETAILS ▓▒░</p>
         </div>
 
-        {/* AddBook form box */}
-        <div className="addbook-form-container">
+        {/* Update form box */}
+        <div className="update-book-form-container">
           {/* Decorative corner pixels */}
           <div className="corner-pixel corner-top-left"></div>
           <div className="corner-pixel corner-top-right"></div>
@@ -88,7 +90,7 @@ function AddBook({ onBookAdded }) {
           {/* Inner decorative border */}
           <div className="inner-border"></div>
 
-          <form onSubmit={handleSubmit} className="addbook-form">
+          <form onSubmit={handleSubmit} className="update-book-form">
             {message.text && (
               <div className="message-container">
                 <Alert className={`pixel-alert ${message.type === 'success' ? 'success-alert' : 'error-alert'}`}>
@@ -175,10 +177,19 @@ function AddBook({ onBookAdded }) {
               />
             </div>
 
-            {/* Add Book button */}
-            <Button type="submit" className="pixel-button">
-              ♦ ADD BOOK ♦
-            </Button>
+            {/* Buttons */}
+            <div className="button-group">
+              <Button type="submit" className="pixel-button update-button">
+                ♦ UPDATE BOOK ♦
+              </Button>
+              <Button 
+                type="button" 
+                className="pixel-button cancel-button"
+                onClick={onClose}
+              >
+                ♦ CANCEL ♦
+              </Button>
+            </div>
 
             {/* Decorative elements */}
             <div className="form-decoration">
@@ -188,14 +199,9 @@ function AddBook({ onBookAdded }) {
             </div>
           </form>
         </div>
-
-        {/* Footer text */}
-        <div className="addbook-footer">
-          <p className="footer-text">▲ RETRO BOOK MANAGEMENT SYSTEM ▲</p>
-        </div>
       </div>
     </div>
   );
 }
 
-export default AddBook;
+export default UpdateBook; 
